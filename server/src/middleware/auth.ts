@@ -1,20 +1,31 @@
 import { Request, Response, NextFunction } from 'express';
-import jwt from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
+interface AuthenticatedRequest extends Request {
+  user?: { username: string };
+}
 
-export const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
+export const authenticateToken = (
+  req: AuthenticatedRequest,
+  res: Response,
+  next: NextFunction
+): void => {
   const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1]; 
+  const token = authHeader && authHeader.split(' ')[1];
 
   if (!token) {
-    return res.sendStatus(401); 
+    res.sendStatus(401); // Unauthorized
+    return;
   }
 
-  jwt.verify(token, process.env.JWT_SECRET as string, (err, user) => {
-    if (err) {
-      return res.sendStatus(403); 
+  jwt.verify(token, process.env.JWT_SECRET as string, (err, decoded) => {
+    if (err || !decoded || typeof decoded === 'string') {
+      res.sendStatus(403); // Forbidden
+      return;
     }
-   
-    req.user = user;
+
+    // Set req.user with a safely typed username
+    req.user = { username: (decoded as JwtPayload).username || 'unknown' };
+
     next();
   });
 };
