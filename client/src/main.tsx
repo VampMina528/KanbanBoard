@@ -8,6 +8,7 @@ import ErrorPage from './pages/ErrorPage.tsx';
 import EditTicket from './pages/EditTicket.tsx';
 import CreateTicket from './pages/CreateTicket.tsx';
 import Login from './pages/Login.tsx';
+import PrivateRoute from './PrivateRoute';
 
 const router = createBrowserRouter([
   {
@@ -30,7 +31,16 @@ const router = createBrowserRouter([
       {
         path: '/login',
         element: <Login />
-      }
+      },
+      {
+        index: true,
+        element: (
+          <PrivateRoute>
+            <Board />
+          </PrivateRoute>
+        )
+      },
+      
     ]
   }
 ])
