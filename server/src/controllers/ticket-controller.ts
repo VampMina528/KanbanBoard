@@ -9,7 +9,10 @@ interface AuthenticatedRequest extends Request {
 export const getAllTickets = async (req: AuthenticatedRequest, res: Response) => {
   try {
     const user = await User.findOne({ where: { username: req.user?.username } });
-    if (!user) return res.status(404).json({ message: 'User not found' });
+    if (!user) {
+      res.status(404).json({ message: 'User not found' });
+      return;
+    }
 
     const tickets = await Ticket.findAll({
       where: { assignedUserId: user.id },
@@ -22,9 +25,9 @@ export const getAllTickets = async (req: AuthenticatedRequest, res: Response) =>
       ],
     });
 
-    res.json(tickets);
+    return res.json(tickets);
   } catch (error: any) {
-    res.status(500).json({ message: error.message });
+    return res.status(500).json({ message: error.message });
   }
 };
 
@@ -45,9 +48,9 @@ export const getTicketById = async (req: AuthenticatedRequest, res: Response) =>
       return res.status(403).json({ message: 'Access denied' });
     }
 
-    res.json(ticket);
+    return res.json(ticket);
   } catch (error: any) {
-    res.status(500).json({ message: error.message });
+    return res.status(500).json({ message: error.message });
   }
 };
 
@@ -56,7 +59,10 @@ export const createTicket = async (req: AuthenticatedRequest, res: Response) => 
 
   try {
     const user = await User.findOne({ where: { username: req.user?.username } });
-    if (!user) return res.status(404).json({ message: 'User not found' });
+    if (!user) {
+      res.status(404).json({ message: 'User not found' });
+      return;
+    }
 
     const newTicket = await Ticket.create({
       name,
@@ -65,9 +71,9 @@ export const createTicket = async (req: AuthenticatedRequest, res: Response) => 
       assignedUserId: user.id,
     });
 
-    res.status(201).json(newTicket);
+    return res.status(201).json(newTicket);
   } catch (error: any) {
-    res.status(400).json({ message: error.message });
+    return res.status(400).json({ message: error.message });
   }
 };
 
@@ -86,9 +92,9 @@ export const updateTicket = async (req: AuthenticatedRequest, res: Response) => 
     ticket.description = description;
     await ticket.save();
 
-    res.json(ticket);
+    return res.json(ticket);
   } catch (error: any) {
-    res.status(400).json({ message: error.message });
+    return res.status(400).json({ message: error.message });
   }
 };
 
@@ -102,9 +108,9 @@ export const deleteTicket = async (req: AuthenticatedRequest, res: Response) => 
     }
 
     await ticket.destroy();
-    res.json({ message: 'Ticket deleted' });
+    return res.json({ message: 'Ticket deleted' });
   } catch (error: any) {
-    res.status(500).json({ message: error.message });
+    return res.status(500).json({ message: error.message });
   }
 };
 

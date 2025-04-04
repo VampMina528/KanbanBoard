@@ -6,7 +6,7 @@ import {
   updateTicket,
   deleteTicket,
 } from '../../controllers/ticket-controller.js';
-import { authenticateToken } from '../auth'; // adjust path as needed
+import { authenticateToken } from '../../middleware/auth.js';
 
 const router = express.Router();
 

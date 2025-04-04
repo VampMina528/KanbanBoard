@@ -3,7 +3,7 @@ import { User } from '../models/user.js';
 export const getAllUsers = async (_req, res) => {
     try {
         const users = await User.findAll({
-            attributes: { exclude: ['password'] }
+            attributes: { exclude: ['password'] },
         });
         res.json(users);
     }
@@ -16,7 +16,7 @@ export const getUserById = async (req, res) => {
     const { id } = req.params;
     try {
         const user = await User.findByPk(id, {
-            attributes: { exclude: ['password'] }
+            attributes: { exclude: ['password'] },
         });
         if (user) {
             res.json(user);

@@ -1,5 +1,5 @@
 import { DataTypes, Sequelize, Model, Optional } from 'sequelize';
-import { User } from './user';
+import { User } from './user.js';
 
 interface TicketAttributes {
   id: number;
@@ -58,12 +58,11 @@ export function TicketFactory(sequelize: Sequelize): typeof Ticket {
       sequelize,
     }
   );
-
-  // Associate each ticket with a user
-  Ticket.belongsTo(User, {
+  User.hasMany(Ticket, {
     foreignKey: 'assignedUserId',
-    as: 'assignedUser',
+    as: 'tickets',
   });
+  
 
   return Ticket;
 }

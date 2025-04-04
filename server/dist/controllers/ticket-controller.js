@@ -1,24 +1,28 @@
 import { Ticket } from '../models/ticket.js';
 import { User } from '../models/user.js';
-// GET /tickets
-export const getAllTickets = async (_req, res) => {
+export const getAllTickets = async (req, res) => {
     try {
+        const user = await User.findOne({ where: { username: req.user?.username } });
+        if (!user) {
+            res.status(404).json({ message: 'User not found' });
+            return;
+        }
         const tickets = await Ticket.findAll({
+            where: { assignedUserId: user.id },
             include: [
                 {
                     model: User,
-                    as: 'assignedUser', // This should match the alias defined in the association
-                    attributes: ['username'], // Include only the username attribute
+                    as: 'assignedUser',
+                    attributes: ['username'],
                 },
             ],
         });
-        res.json(tickets);
+        return res.json(tickets);
     }
     catch (error) {
-        res.status(500).json({ message: error.message });
+        return res.status(500).json({ message: error.message });
     }
 };
-// GET /tickets/:id
 export const getTicketById = async (req, res) => {
     const { id } = req.params;
     try {
@@ -26,69 +30,73 @@ export const getTicketById = async (req, res) => {
             include: [
                 {
                     model: User,
-                    as: 'assignedUser', // This should match the alias defined in the association
-                    attributes: ['username'], // Include only the username attribute
+                    as: 'assignedUser',
+                    attributes: ['username'],
                 },
             ],
         });
-        if (ticket) {
-            res.json(ticket);
+        if (!ticket || ticket.assignedUserId !== (await getUserId(req))) {
+            return res.status(403).json({ message: 'Access denied' });
         }
-        else {
-            res.status(404).json({ message: 'Ticket not found' });
-        }
+        return res.json(ticket);
     }
     catch (error) {
-        res.status(500).json({ message: error.message });
+        return res.status(500).json({ message: error.message });
     }
 };
-// POST /tickets
 export const createTicket = async (req, res) => {
-    const { name, status, description, assignedUserId } = req.body;
+    const { name, status, description } = req.body;
     try {
-        const newTicket = await Ticket.create({ name, status, description, assignedUserId });
-        res.status(201).json(newTicket);
+        const user = await User.findOne({ where: { username: req.user?.username } });
+        if (!user) {
+            res.status(404).json({ message: 'User not found' });
+            return;
+        }
+        const newTicket = await Ticket.create({
+            name,
+            status,
+            description,
+            assignedUserId: user.id,
+        });
+        return res.status(201).json(newTicket);
     }
     catch (error) {
-        res.status(400).json({ message: error.message });
+        return res.status(400).json({ message: error.message });
     }
 };
-// PUT /tickets/:id
 export const updateTicket = async (req, res) => {
     const { id } = req.params;
-    const { name, status, description, assignedUserId } = req.body;
+    const { name, status, description } = req.body;
     try {
         const ticket = await Ticket.findByPk(id);
-        if (ticket) {
-            ticket.name = name;
-            ticket.status = status;
-            ticket.description = description;
-            ticket.assignedUserId = assignedUserId;
-            await ticket.save();
-            res.json(ticket);
+        if (!ticket || ticket.assignedUserId !== (await getUserId(req))) {
+            return res.status(403).json({ message: 'Access denied' });
         }
-        else {
-            res.status(404).json({ message: 'Ticket not found' });
-        }
+        ticket.name = name;
+        ticket.status = status;
+        ticket.description = description;
+        await ticket.save();
+        return res.json(ticket);
     }
     catch (error) {
-        res.status(400).json({ message: error.message });
+        return res.status(400).json({ message: error.message });
     }
 };
-// DELETE /tickets/:id
 export const deleteTicket = async (req, res) => {
     const { id } = req.params;
     try {
         const ticket = await Ticket.findByPk(id);
-        if (ticket) {
-            await ticket.destroy();
-            res.json({ message: 'Ticket deleted' });
+        if (!ticket || ticket.assignedUserId !== (await getUserId(req))) {
+            return res.status(403).json({ message: 'Access denied' });
         }
-        else {
-            res.status(404).json({ message: 'Ticket not found' });
-        }
+        await ticket.destroy();
+        return res.json({ message: 'Ticket deleted' });
     }
     catch (error) {
-        res.status(500).json({ message: error.message });
+        return res.status(500).json({ message: error.message });
     }
+};
+const getUserId = async (req) => {
+    const user = await User.findOne({ where: { username: req.user?.username } });
+    return user ? user.id : null;
 };
