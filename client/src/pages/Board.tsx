@@ -97,22 +97,22 @@ const Board = () => {
                   const keyword = filterText.toLowerCase();
                   return (
                     ticket.status === status &&
-                    (ticket.name.toLowerCase().includes(keyword) ||
-                      ticket.description.toLowerCase().includes(keyword))
+                    (ticket.name?.toLowerCase().includes(keyword) ||
+                      ticket.description?.toLowerCase().includes(keyword))
                   );
                 })
                 .sort((a, b) => {
                   if (sortOption === 'newest') {
-                    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+                    return new Date(b.createdAt ?? '').getTime() - new Date(a.createdAt ?? '').getTime();
                   }
                   if (sortOption === 'oldest') {
-                    return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+                    return new Date(a.createdAt ?? '').getTime() - new Date(b.createdAt ?? '').getTime();
                   }
                   if (sortOption === 'az') {
-                    return a.name.localeCompare(b.name);
+                    return (a.name ?? '').localeCompare(b.name ?? '');
                   }
                   if (sortOption === 'za') {
-                    return b.name.localeCompare(a.name);
+                    return (b.name ?? '').localeCompare(a.name ?? '');
                   }
                   return 0;
                 });
