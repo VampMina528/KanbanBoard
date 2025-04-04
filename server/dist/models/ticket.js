@@ -1,5 +1,4 @@
 import { DataTypes, Model } from 'sequelize';
-import { User } from './user.js';
 export class Ticket extends Model {
 }
 export function TicketFactory(sequelize) {
@@ -28,10 +27,6 @@ export function TicketFactory(sequelize) {
     }, {
         tableName: 'tickets',
         sequelize,
-    });
-    User.hasMany(Ticket, {
-        foreignKey: 'assignedUserId',
-        as: 'tickets',
     });
     return Ticket;
 }

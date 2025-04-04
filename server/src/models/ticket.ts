@@ -58,11 +58,6 @@ export function TicketFactory(sequelize: Sequelize): typeof Ticket {
       sequelize,
     }
   );
-  User.hasMany(Ticket, {
-    foreignKey: 'assignedUserId',
-    as: 'tickets',
-  });
-  
 
   return Ticket;
 }
