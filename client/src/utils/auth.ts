@@ -13,7 +13,7 @@ class AuthService {
     const token = this.getToken();
     return !!token && !this.isTokenExpired(token);
   }
-  
+
   isTokenExpired(token: string) {
     // TODO: return a value that indicates if the token is expired
     try {

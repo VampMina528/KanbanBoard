@@ -11,7 +11,10 @@ interface TicketAttributes {
 
 interface TicketCreationAttributes extends Optional<TicketAttributes, 'id'> {}
 
-export class Ticket extends Model<TicketAttributes, TicketCreationAttributes> implements TicketAttributes {
+export class Ticket
+  extends Model<TicketAttributes, TicketCreationAttributes>
+  implements TicketAttributes
+{
   public id!: number;
   public name!: string;
   public status!: string;
@@ -55,6 +58,12 @@ export function TicketFactory(sequelize: Sequelize): typeof Ticket {
       sequelize,
     }
   );
+
+  // Associate each ticket with a user
+  Ticket.belongsTo(User, {
+    foreignKey: 'assignedUserId',
+    as: 'assignedUser',
+  });
 
   return Ticket;
 }

@@ -1,6 +1,6 @@
 import { DataTypes, Sequelize, Model, Optional } from 'sequelize';
 import bcrypt from 'bcrypt';
-
+import { Ticket } from './ticket';
 interface UserAttributes {
   id: number;
   username: string;
@@ -51,9 +51,12 @@ export function UserFactory(sequelize: Sequelize): typeof User {
         beforeUpdate: async (user: User) => {
           await user.setPassword(user.password);
         },
-      }
+      },
     }
   );
-
+  User.hasMany(Ticket, {
+    foreignKey: 'assignedUserId',
+    as: 'tickets',
+  });
   return User;
 }

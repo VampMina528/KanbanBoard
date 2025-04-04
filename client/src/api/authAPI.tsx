@@ -1,4 +1,4 @@
-import { UserLogin } from "../interfaces/UserLogin";
+import { UserLogin } from '../interfaces/UserLogin';
 
 const login = async (userInfo: UserLogin) => {
   // TODO: make a POST request to the login route
@@ -16,7 +16,7 @@ const login = async (userInfo: UserLogin) => {
     throw new Error(data.message || 'Login failed');
   }
 
-  return data; 
+  return data;
 };
 
 export { login };

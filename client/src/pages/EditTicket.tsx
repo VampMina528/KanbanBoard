@@ -17,7 +17,7 @@ const EditTicket = () => {
     } catch (err) {
       console.error('Failed to retrieve ticket:', err);
     }
-  }
+  };
 
   useEffect(() => {
     fetchTicket(state);
@@ -25,14 +25,13 @@ const EditTicket = () => {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    if (ticket && ticket.id !== null){
+    if (ticket && ticket.id !== null) {
       updateTicket(ticket.id, ticket);
       navigate('/');
-    }
-    else{
+    } else {
       console.error('Ticket data is undefined.');
     }
-  }
+  };
 
   const handleTextAreaChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -46,43 +45,36 @@ const EditTicket = () => {
 
   return (
     <>
-      <div className='container'>
-        {
-          ticket ? (
-            <form className='form' onSubmit={handleSubmit}>
-              <h1>Edit Ticket</h1>
-              <label htmlFor='tName'>Ticket Name</label>
-              <textarea
-                id='tName'
-                name='name'
-                value={ticket.name || ''}
-                onChange={handleTextAreaChange}
-                />
-              <label htmlFor='tStatus'>Ticket Status</label>
-              <select
-                name='status'
-                id='tStatus'
-                value={ticket.status || ''}
-                onChange={handleChange}
-              >
-                <option  value='Todo'>Todo</option>
-                <option  value='In Progress'>In Progress</option>
-                <option  value='Done'>Done</option>
+      <div className="container">
+        {ticket ? (
+          <form className="form" onSubmit={handleSubmit}>
+            <h1>Edit Ticket</h1>
+            <label htmlFor="tName">Ticket Name</label>
+            <textarea
+              id="tName"
+              name="name"
+              value={ticket.name || ''}
+              onChange={handleTextAreaChange}
+            />
+            <label htmlFor="tStatus">Ticket Status</label>
+            <select name="status" id="tStatus" value={ticket.status || ''} onChange={handleChange}>
+              <option value="Todo">Todo</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Done">Done</option>
             </select>
-            <label htmlFor='tDescription'>Ticket Description</label>
-              <textarea
-                id='tDescription'
-                name='description'
-                value={ticket.description || ''}
-                onChange={handleTextAreaChange}
-              />
-              <button type='submit'>Submit Form</button>
-            </form>
-          ) : (
-            <div>Issues fetching ticket</div>
-          )
-        }
-      </div>  
+            <label htmlFor="tDescription">Ticket Description</label>
+            <textarea
+              id="tDescription"
+              name="description"
+              value={ticket.description || ''}
+              onChange={handleTextAreaChange}
+            />
+            <button type="submit">Submit Form</button>
+          </form>
+        ) : (
+          <div>Issues fetching ticket</div>
+        )}
+      </div>
     </>
   );
 };

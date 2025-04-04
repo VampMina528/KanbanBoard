@@ -13,13 +13,13 @@
 }
 
 /* webkit solution */
-::-webkit-input-placeholder { 
-  text-align:right; 
+::-webkit-input-placeholder {
+  text-align: right;
 }
 
 /* mozilla solution */
-input:-moz-placeholder { 
-  text-align:right; 
+input:-moz-placeholder {
+  text-align: right;
 }
 
 a {
@@ -32,7 +32,7 @@ a:hover {
 }
 
 body {
-  background: #ECF0F1;
+  background: #ecf0f1;
   background-size: cover;
   background-repeat: no-repeat no-repeat;
   background-position: center center;
@@ -140,7 +140,7 @@ tbody tr:nth-child(odd) {
   text-align: center;
   font-weight: 500;
   width: 33%;
-  height: 90vh; 
+  height: 90vh;
   border: 1px solid rgba(0, 0, 0, 0.2);
   margin: 5px;
   padding: 5px;
@@ -179,7 +179,6 @@ tbody tr:nth-child(odd) {
   margin-left: auto;
 }
 
-
 .form {
   width: 60%;
   height: 80%;
@@ -191,13 +190,13 @@ tbody tr:nth-child(odd) {
   align-items: center;
 }
 
-.form > h1, .form > label {
+.form > h1,
+.form > label {
   color: yellow;
 }
 
 .form > input {
   width: 200px;
-  
 }
 
 .form > label {
@@ -241,7 +240,6 @@ tbody tr:nth-child(odd) {
   align-items: center;
   justify-content: center;
 }
-
 
 @media (prefers-color-scheme: light) {
   :root {

@@ -17,20 +17,8 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       {
-        index: true,
-        element: <Board />
-      }, 
-      {
-        path: '/edit',
-        element: <EditTicket />
-      },
-      {
-        path: '/create',
-        element: <CreateTicket />
-      },
-      {
-        path: '/login',
-        element: <Login />
+        path: 'login',
+        element: <Login />,
       },
       {
         index: true,
@@ -38,12 +26,27 @@ const router = createBrowserRouter([
           <PrivateRoute>
             <Board />
           </PrivateRoute>
-        )
+        ),
       },
-      
-    ]
-  }
-])
+      {
+        path: 'create',
+        element: (
+          <PrivateRoute>
+            <CreateTicket />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: 'edit/:id',
+        element: (
+          <PrivateRoute>
+            <EditTicket />
+          </PrivateRoute>
+        ),
+      },
+    ],
+  },
+]);
 
 const rootElement = document.getElementById('root');
 if (rootElement) {

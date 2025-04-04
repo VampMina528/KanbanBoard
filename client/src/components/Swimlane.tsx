@@ -5,7 +5,7 @@ import { ApiMessage } from '../interfaces/ApiMessage';
 interface SwimlaneProps {
   title: string;
   tickets: TicketData[];
-  deleteTicket: (ticketId: number) => Promise<ApiMessage>
+  deleteTicket: (ticketId: number) => Promise<ApiMessage>;
 }
 
 const Swimlane = ({ title, tickets, deleteTicket }: SwimlaneProps) => {
@@ -25,12 +25,8 @@ const Swimlane = ({ title, tickets, deleteTicket }: SwimlaneProps) => {
   return (
     <div className={`swimlane ${getStatusClass(title)}`}>
       <h2>{title}</h2>
-      {tickets.map(ticket => (
-        <TicketCard 
-          key={ticket.id}
-          ticket={ticket}
-          deleteTicket={deleteTicket}
-        />
+      {tickets.map((ticket) => (
+        <TicketCard key={ticket.id} ticket={ticket} deleteTicket={deleteTicket} />
       ))}
     </div>
   );
