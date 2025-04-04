@@ -36,6 +36,7 @@
   "homepage": "https://github.com/VampMina528/KanbanBoard#readme",
   "description": "",
   "dependencies": {
+    "bcryptjs": "^3.0.2",
     "react-router-dom": "^7.4.1"
   }
 }
