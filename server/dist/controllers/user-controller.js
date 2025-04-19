@@ -11,7 +11,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteUser = exports.updateUser = exports.createUser = exports.getUserById = exports.getAllUsers = void 0;
 const user_js_1 = require("../models/user.js");
-// GET /Users
 const getAllUsers = (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const users = yield user_js_1.User.findAll({
@@ -24,7 +23,6 @@ const getAllUsers = (_req, res) => __awaiter(void 0, void 0, void 0, function* (
     }
 });
 exports.getAllUsers = getAllUsers;
-// GET /Users/:id
 const getUserById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     try {
@@ -43,11 +41,10 @@ const getUserById = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
 });
 exports.getUserById = getUserById;
-// POST /Users
 const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { username, password } = req.body;
+    const { username, email, password } = req.body;
     try {
-        const newUser = yield user_js_1.User.create({ username, password });
+        const newUser = yield user_js_1.User.create({ username, email, password });
         res.status(201).json(newUser);
     }
     catch (error) {
@@ -55,14 +52,14 @@ const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.createUser = createUser;
-// PUT /Users/:id
 const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
-    const { username, password } = req.body;
+    const { username, email, password } = req.body;
     try {
         const user = yield user_js_1.User.findByPk(id);
         if (user) {
             user.username = username;
+            user.email = email;
             user.password = password;
             yield user.save();
             res.json(user);
@@ -76,7 +73,6 @@ const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.updateUser = updateUser;
-// DELETE /Users/:id
 const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     try {

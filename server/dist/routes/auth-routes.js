@@ -18,12 +18,12 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const router = (0, express_1.Router)();
 router.post('/login', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { username, password } = req.body;
+    const { email, password } = req.body;
     try {
         console.log('🔐 Login request received');
         console.log('Request body:', req.body);
-        const user = yield user_js_1.User.findOne({ where: { username } });
-        console.log('User found:', user ? user.username : null);
+        const user = yield user_js_1.User.findOne({ where: { email } });
+        console.log('User found:', user ? user.email : null);
         console.log('Entered password:', password);
         console.log('Stored hash:', user === null || user === void 0 ? void 0 : user.password);
         if (!user) {
@@ -37,7 +37,7 @@ router.post('/login', (req, res) => __awaiter(void 0, void 0, void 0, function* 
             return res.status(401).json({ message: 'Authentication failed' });
         }
         const secretKey = process.env.JWT_SECRET_KEY || 'your_fallback_secret';
-        const token = jsonwebtoken_1.default.sign({ username }, secretKey, { expiresIn: '1h' });
+        const token = jsonwebtoken_1.default.sign({ id: user.id }, secretKey, { expiresIn: '1h' });
         console.log('✅ Authentication successful');
         return res.json({ token });
     }

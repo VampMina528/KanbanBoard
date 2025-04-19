@@ -12,10 +12,24 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.seedUsers = void 0;
 const user_js_1 = require("../models/user.js");
 const seedUsers = () => __awaiter(void 0, void 0, void 0, function* () {
-    yield user_js_1.User.bulkCreate([
-        { username: 'JollyGuru', password: 'password' },
-        { username: 'SunnyScribe', password: 'password' },
-        { username: 'RadiantComet', password: 'password' },
-    ], { individualHooks: true });
+    const users = [
+        {
+            username: 'JollyGuru',
+            email: 'jolly@example.com',
+            password: 'password',
+        },
+        {
+            username: 'SunnyScribe',
+            email: 'sunny@example.com',
+            password: 'password',
+        },
+        {
+            username: 'RadiantComet',
+            email: 'radiant@example.com',
+            password: 'password',
+        },
+    ];
+    yield user_js_1.User.bulkCreate(users);
+    console.log('Users seeded!');
 });
 exports.seedUsers = seedUsers;

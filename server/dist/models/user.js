@@ -66,6 +66,11 @@ function UserFactory(sequelize) {
             type: sequelize_1.DataTypes.STRING,
             allowNull: false,
         },
+        email: {
+            type: sequelize_1.DataTypes.STRING,
+            allowNull: false,
+            unique: true,
+        },
         password: {
             type: sequelize_1.DataTypes.STRING,
             allowNull: false,
