@@ -1,6 +1,18 @@
-import { Ticket } from '../models/ticket.js';
-export const seedTickets = async () => {
-    await Ticket.bulkCreate([
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.seedTickets = void 0;
+const ticket_js_1 = require("../models/ticket.js");
+const seedTickets = () => __awaiter(void 0, void 0, void 0, function* () {
+    yield ticket_js_1.Ticket.bulkCreate([
         {
             name: 'Design landing page',
             status: 'In Progress',
@@ -32,4 +44,5 @@ export const seedTickets = async () => {
             assignedUserId: 2,
         },
     ]);
-};
+});
+exports.seedTickets = seedTickets;

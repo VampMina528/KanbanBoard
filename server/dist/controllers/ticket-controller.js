@@ -1,17 +1,30 @@
-import { Ticket } from '../models/ticket.js';
-import { User } from '../models/user.js';
-export const getAllTickets = async (req, res) => {
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.deleteTicket = exports.updateTicket = exports.createTicket = exports.getTicketById = exports.getAllTickets = void 0;
+const ticket_js_1 = require("../models/ticket.js");
+const user_js_1 = require("../models/user.js");
+const getAllTickets = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     try {
-        const user = await User.findOne({ where: { username: req.user?.username } });
+        const user = yield user_js_1.User.findOne({ where: { username: (_a = req.user) === null || _a === void 0 ? void 0 : _a.username } });
         if (!user) {
             res.status(404).json({ message: 'User not found' });
             return;
         }
-        const tickets = await Ticket.findAll({
+        const tickets = yield ticket_js_1.Ticket.findAll({
             where: { assignedUserId: user.id },
             include: [
                 {
-                    model: User,
+                    model: user_js_1.User,
                     as: 'assignedUser',
                     attributes: ['username'],
                 },
@@ -22,20 +35,21 @@ export const getAllTickets = async (req, res) => {
     catch (error) {
         return res.status(500).json({ message: error.message });
     }
-};
-export const getTicketById = async (req, res) => {
+});
+exports.getAllTickets = getAllTickets;
+const getTicketById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     try {
-        const ticket = await Ticket.findByPk(id, {
+        const ticket = yield ticket_js_1.Ticket.findByPk(id, {
             include: [
                 {
-                    model: User,
+                    model: user_js_1.User,
                     as: 'assignedUser',
                     attributes: ['username'],
                 },
             ],
         });
-        if (!ticket || ticket.assignedUserId !== (await getUserId(req))) {
+        if (!ticket || ticket.assignedUserId !== (yield getUserId(req))) {
             return res.status(403).json({ message: 'Access denied' });
         }
         return res.json(ticket);
@@ -43,16 +57,18 @@ export const getTicketById = async (req, res) => {
     catch (error) {
         return res.status(500).json({ message: error.message });
     }
-};
-export const createTicket = async (req, res) => {
+});
+exports.getTicketById = getTicketById;
+const createTicket = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     const { name, status, description } = req.body;
     try {
-        const user = await User.findOne({ where: { username: req.user?.username } });
+        const user = yield user_js_1.User.findOne({ where: { username: (_a = req.user) === null || _a === void 0 ? void 0 : _a.username } });
         if (!user) {
             res.status(404).json({ message: 'User not found' });
             return;
         }
-        const newTicket = await Ticket.create({
+        const newTicket = yield ticket_js_1.Ticket.create({
             name,
             status,
             description,
@@ -63,40 +79,44 @@ export const createTicket = async (req, res) => {
     catch (error) {
         return res.status(400).json({ message: error.message });
     }
-};
-export const updateTicket = async (req, res) => {
+});
+exports.createTicket = createTicket;
+const updateTicket = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     const { name, status, description } = req.body;
     try {
-        const ticket = await Ticket.findByPk(id);
-        if (!ticket || ticket.assignedUserId !== (await getUserId(req))) {
+        const ticket = yield ticket_js_1.Ticket.findByPk(id);
+        if (!ticket || ticket.assignedUserId !== (yield getUserId(req))) {
             return res.status(403).json({ message: 'Access denied' });
         }
         ticket.name = name;
         ticket.status = status;
         ticket.description = description;
-        await ticket.save();
+        yield ticket.save();
         return res.json(ticket);
     }
     catch (error) {
         return res.status(400).json({ message: error.message });
     }
-};
-export const deleteTicket = async (req, res) => {
+});
+exports.updateTicket = updateTicket;
+const deleteTicket = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     try {
-        const ticket = await Ticket.findByPk(id);
-        if (!ticket || ticket.assignedUserId !== (await getUserId(req))) {
+        const ticket = yield ticket_js_1.Ticket.findByPk(id);
+        if (!ticket || ticket.assignedUserId !== (yield getUserId(req))) {
             return res.status(403).json({ message: 'Access denied' });
         }
-        await ticket.destroy();
+        yield ticket.destroy();
         return res.json({ message: 'Ticket deleted' });
     }
     catch (error) {
         return res.status(500).json({ message: error.message });
     }
-};
-const getUserId = async (req) => {
-    const user = await User.findOne({ where: { username: req.user?.username } });
+});
+exports.deleteTicket = deleteTicket;
+const getUserId = (req) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    const user = yield user_js_1.User.findOne({ where: { username: (_a = req.user) === null || _a === void 0 ? void 0 : _a.username } });
     return user ? user.id : null;
-};
+});

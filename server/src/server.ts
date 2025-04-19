@@ -1,5 +1,8 @@
 const forceDatabaseRefresh = false;
+import bcrypt from 'bcryptjs';
 
+const hash = bcrypt.hashSync('password123', 10);
+console.log('Generated Hash:', hash);
 import dotenv from 'dotenv';
 dotenv.config();
 
