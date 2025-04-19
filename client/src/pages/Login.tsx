@@ -5,7 +5,7 @@ import { login } from '../api/authAPI';
 
 const Login = () => {
   const [loginData, setLoginData] = useState({
-    username: '',
+    email: '',
     password: '',
   });
 
@@ -31,11 +31,11 @@ const Login = () => {
     <div className="container">
       <form className="form" onSubmit={handleSubmit}>
         <h1>Login</h1>
-        <label>Username</label>
+        <label>Email</label>
         <input
-          type="text"
-          name="username"
-          value={loginData.username || ''}
+          type="email"
+          name="email"
+          value={loginData.email || ''}
           onChange={handleChange}
         />
         <label>Password</label>
