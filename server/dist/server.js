@@ -3,12 +3,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const forceDatabaseRefresh = false;
+const forceDatabaseRefresh = true;
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 const express_1 = __importDefault(require("express"));
-const cors_1 = __importDefault(require("cors")); // ✅ add this
+const cors_1 = __importDefault(require("cors"));
 const index_js_1 = __importDefault(require("./routes/index.js"));
 const index_js_2 = require("./models/index.js");
 const app = (0, express_1.default)();

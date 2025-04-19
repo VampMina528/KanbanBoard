@@ -1,11 +1,11 @@
-const forceDatabaseRefresh = false;
+const forceDatabaseRefresh = true;
 
 import bcrypt from 'bcryptjs';
 import dotenv from 'dotenv';
 dotenv.config();
 
 import express from 'express';
-import cors from 'cors'; // ✅ add this
+import cors from 'cors';
 import routes from './routes/index.js';
 import { sequelize } from './models/index.js';
 
