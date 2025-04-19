@@ -9,8 +9,16 @@ dotenv_1.default.config();
 const sequelize_1 = require("sequelize");
 const user_js_1 = require("./user.js");
 const ticket_js_1 = require("./ticket.js");
-const sequelize = process.env.DB_URL
-    ? new sequelize_1.Sequelize(process.env.DB_URL)
+const sequelize = process.env.DATABASE_URL
+    ? new sequelize_1.Sequelize(process.env.DATABASE_URL, {
+        dialect: 'postgres',
+        dialectOptions: {
+            ssl: {
+                require: true,
+                rejectUnauthorized: false,
+            },
+        },
+    })
     : new sequelize_1.Sequelize(process.env.DB_NAME || '', process.env.DB_USER || '', process.env.DB_PASSWORD, {
         host: 'localhost',
         dialect: 'postgres',
