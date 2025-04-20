@@ -34,5 +34,19 @@ router.post('/login', async (req: Request, res: Response) => {
     return res.status(500).json({ message: 'Internal server error' });
   }
 });
+router.post('/seed-user', async (_req, res) => {
+  try {
+    const testUser = await User.create({
+      username: 'admin',
+      email: 'admin@example.com',
+      password: '$2b$10$1GHuK6iUq4w2oIvULZduB.JP2D9It5cDJFQyUlgRxby0Zt0GZ6Oe2',
+    });
+
+    res.status(201).json({ message: 'Seed user created!', testUser });
+  } catch (error) {
+    console.error('Seeding error:', error);
+    res.status(500).json({ message: 'Failed to seed user' });
+  }
+});
 
 export default router;
