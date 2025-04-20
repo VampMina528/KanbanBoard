@@ -5,7 +5,6 @@ import bcrypt from 'bcryptjs';
 
 const router = Router();
 
-
 router.post('/login', async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
@@ -34,18 +33,29 @@ router.post('/login', async (req: Request, res: Response) => {
     return res.status(500).json({ message: 'Internal server error' });
   }
 });
+
 router.post('/seed-user', async (_req, res) => {
   try {
     const testUser = await User.create({
       username: 'admin',
       email: 'admin@example.com',
-      password: '$2b$10$1GHuK6iUq4w2oIvULZduB.JP2D9It5cDJFQyUlgRxby0Zt0GZ6Oe2',
+      password: '$2b$10$jpbKvAh7zzSqRm/jZfM0u.yKXPk0R5.4QHOaoKjQIjUrqhHdxVp4K', // password123
     });
 
     res.status(201).json({ message: 'Seed user created!', testUser });
   } catch (error) {
     console.error('Seeding error:', error);
     res.status(500).json({ message: 'Failed to seed user' });
+  }
+});
+
+router.delete('/delete-user', async (_req, res) => {
+  try {
+    await User.destroy({ where: { email: 'admin@example.com' } });
+    res.status(200).json({ message: 'Test user deleted' });
+  } catch (err) {
+    console.error('Delete error:', err);
+    res.status(500).json({ message: 'Failed to delete user' });
   }
 });
 

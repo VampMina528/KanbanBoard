@@ -41,4 +41,28 @@ router.post('/login', (req, res) => __awaiter(void 0, void 0, void 0, function* 
         return res.status(500).json({ message: 'Internal server error' });
     }
 }));
+router.post('/seed-user', (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const testUser = yield user_js_1.User.create({
+            username: 'admin',
+            email: 'admin@example.com',
+            password: '$2b$10$jpbKvAh7zzSqRm/jZfM0u.yKXPk0R5.4QHOaoKjQIjUrqhHdxVp4K', // password123
+        });
+        res.status(201).json({ message: 'Seed user created!', testUser });
+    }
+    catch (error) {
+        console.error('Seeding error:', error);
+        res.status(500).json({ message: 'Failed to seed user' });
+    }
+}));
+router.delete('/delete-user', (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        yield user_js_1.User.destroy({ where: { email: 'admin@example.com' } });
+        res.status(200).json({ message: 'Test user deleted' });
+    }
+    catch (err) {
+        console.error('Delete error:', err);
+        res.status(500).json({ message: 'Failed to delete user' });
+    }
+}));
 exports.default = router;

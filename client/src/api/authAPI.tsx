@@ -16,7 +16,7 @@ const login = async (userInfo: UserLogin) => {
     });
 
     if (!response.ok) {
-      const errorText = await response.text(); // fallback if .json() fails
+      const errorText = await response.text(); 
       throw new Error(`Login failed: ${errorText}`);
     }
 
