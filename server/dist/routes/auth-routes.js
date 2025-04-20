@@ -20,29 +20,24 @@ const router = (0, express_1.Router)();
 router.post('/login', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password } = req.body;
     try {
-        console.log('🔐 Login request received');
-        console.log('Request body:', req.body);
+        console.log('Login request received');
         const user = yield user_js_1.User.findOne({ where: { email } });
-        console.log('User found:', user ? user.email : null);
-        console.log('Entered password:', password);
-        console.log('Stored hash:', user === null || user === void 0 ? void 0 : user.password);
         if (!user) {
-            console.log('❌ User not found');
+            console.log('User not found');
             return res.status(401).json({ message: 'Authentication failed' });
         }
-        const passwordIsValid = yield bcryptjs_1.default.compare(password, user.password);
-        console.log('Password is valid:', passwordIsValid);
-        if (!passwordIsValid) {
-            console.log('❌ Invalid password');
+        const isValid = yield bcryptjs_1.default.compare(password, user.password);
+        if (!isValid) {
+            console.log('Invalid password');
             return res.status(401).json({ message: 'Authentication failed' });
         }
-        const secretKey = process.env.JWT_SECRET_KEY || 'your_fallback_secret';
-        const token = jsonwebtoken_1.default.sign({ id: user.id }, secretKey, { expiresIn: '1h' });
-        console.log('✅ Authentication successful');
+        const secret = process.env.JWT_SECRET_KEY || 'fallback_secret';
+        const token = jsonwebtoken_1.default.sign({ id: user.id }, secret, { expiresIn: '1h' });
+        console.log('Authentication successful');
         return res.json({ token });
     }
-    catch (error) {
-        console.error('Login error:', error);
+    catch (err) {
+        console.error('Login error:', err);
         return res.status(500).json({ message: 'Internal server error' });
     }
 }));

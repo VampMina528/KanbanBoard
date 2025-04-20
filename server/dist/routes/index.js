@@ -7,6 +7,6 @@ const express_1 = require("express");
 const auth_routes_js_1 = __importDefault(require("./auth-routes.js"));
 const index_js_1 = __importDefault(require("./api/index.js"));
 const router = (0, express_1.Router)();
-router.use('/auth', auth_routes_js_1.default);
+router.use('/api', auth_routes_js_1.default);
 router.use('/api', index_js_1.default);
 exports.default = router;

@@ -4,7 +4,7 @@ import apiRoutes from './api/index.js';
 
 const router = Router();
 
-router.use('/auth', authRoutes);
-router.use('/api', apiRoutes); 
+router.use('/api', authRoutes);
+router.use('/api', apiRoutes);
 
 export default router;
