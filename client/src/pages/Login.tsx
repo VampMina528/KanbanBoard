@@ -1,5 +1,4 @@
 import { useState, FormEvent, ChangeEvent } from 'react';
-
 import Auth from '../utils/auth';
 import { login } from '../api/authAPI';
 
@@ -19,6 +18,11 @@ const Login = () => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    if (!loginData.email || !loginData.password) {
+      alert('Please enter both email and password.');
+      return;
+    }
+
     try {
       const data = await login(loginData);
       Auth.login(data.token);
@@ -31,18 +35,20 @@ const Login = () => {
     <div className="container">
       <form className="form" onSubmit={handleSubmit}>
         <h1>Login</h1>
-        <label>Email</label>
+        <label htmlFor="email">Email</label>
         <input
+          id="email"
           type="email"
           name="email"
-          value={loginData.email || ''}
+          value={loginData.email}
           onChange={handleChange}
         />
-        <label>Password</label>
+        <label htmlFor="password">Password</label>
         <input
+          id="password"
           type="password"
           name="password"
-          value={loginData.password || ''}
+          value={loginData.password}
           onChange={handleChange}
         />
         <button type="submit">Submit Form</button>

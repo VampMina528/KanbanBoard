@@ -37,10 +37,11 @@ const Board = () => {
   const deleteIndvTicket = async (ticketId: number): Promise<ApiMessage> => {
     try {
       const data = await deleteTicket(ticketId);
-      fetchTickets();
       return data;
     } catch (err) {
       return Promise.reject(err);
+    } finally {
+      fetchTickets(); // ensure tickets update after deletion
     }
   };
 

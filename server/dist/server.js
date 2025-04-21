@@ -21,7 +21,7 @@ app.use((0, cors_1.default)({
 app.get('/ping', (_req, res) => {
     res.send('pong');
 });
-app.use(express_1.default.static('../client/dist'));
+app.use(express_1.default.static('client/dist')); // Corrected path here
 app.use(express_1.default.json());
 app.use(index_js_1.default);
 const hash = bcryptjs_1.default.hashSync('password123', 10);

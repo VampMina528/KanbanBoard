@@ -19,13 +19,11 @@ app.use(cors({
   credentials: true,
 }));
 
-
 app.get('/ping', (_req, res) => {
   res.send('pong');
 });
 
-
-app.use(express.static('../client/dist'));
+app.use(express.static('client/dist'));  // Corrected path here
 
 app.use(express.json());
 app.use(routes);
