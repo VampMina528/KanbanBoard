@@ -18,10 +18,11 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const router = (0, express_1.Router)();
 router.post('/login', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { email, password } = req.body;
+    const { username, password } = req.body;
     try {
         console.log('Login request received');
-        const user = yield user_js_1.User.findOne({ where: { email } });
+        const user = yield user_js_1.User.findOne({ where: { username } });
+        console.log('User found:', user); // ✅ added this for diagnosis
         if (!user) {
             console.log('User not found');
             return res.status(401).json({ message: 'Authentication failed' });
@@ -46,13 +47,28 @@ router.post('/seed-user', (_req, res) => __awaiter(void 0, void 0, void 0, funct
         const testUser = yield user_js_1.User.create({
             username: 'admin',
             email: 'admin@example.com',
-            password: '$2b$10$jpbKvAh7zzSqRm/jZfM0u.yKXPk0R5.4QHOaoKjQIjUrqhHdxVp4K', // password123
+            password: '$2b$10$jpbKvAh7zzSqRm/jZfM0u.yKXPk0R5.4QHOaoKjQIjUrqhHdxVp4K',
         });
         res.status(201).json({ message: 'Seed user created!', testUser });
     }
     catch (error) {
         console.error('Seeding error:', error);
         res.status(500).json({ message: 'Failed to seed user' });
+    }
+}));
+router.post('/seed-test-user', (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const hashedPassword = yield bcryptjs_1.default.hash('1234', 10);
+        const testUser = yield user_js_1.User.create({
+            username: 'testuser',
+            email: 'testuser@example.com',
+            password: hashedPassword,
+        });
+        res.status(201).json({ message: 'Test user created!', testUser });
+    }
+    catch (error) {
+        console.error('Seeding error:', error);
+        res.status(500).json({ message: 'Failed to seed test user' });
     }
 }));
 router.delete('/delete-user', (_req, res) => __awaiter(void 0, void 0, void 0, function* () {

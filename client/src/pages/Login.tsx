@@ -4,7 +4,7 @@ import { login } from '../api/authAPI';
 
 const Login = () => {
   const [loginData, setLoginData] = useState({
-    email: '',
+    username: '',
     password: '',
   });
 
@@ -18,29 +18,31 @@ const Login = () => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    if (!loginData.email || !loginData.password) {
-      alert('Please enter both email and password.');
+    if (!loginData.username || !loginData.password) {
+      alert('Please enter both username and password.');
       return;
     }
-
+  
     try {
+      console.log('Submitting login data:', loginData); 
       const data = await login(loginData);
       Auth.login(data.token);
     } catch (err) {
       console.error('Failed to login', err);
     }
   };
+  
 
   return (
     <div className="container">
       <form className="form" onSubmit={handleSubmit}>
         <h1>Login</h1>
-        <label htmlFor="email">Email</label>
+        <label htmlFor="username">Username</label>
         <input
-          id="email"
-          type="email"
-          name="email"
-          value={loginData.email}
+          id="username"
+          type="text"
+          name="username"
+          value={loginData.username}
           onChange={handleChange}
         />
         <label htmlFor="password">Password</label>

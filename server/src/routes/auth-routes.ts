@@ -6,11 +6,11 @@ import bcrypt from 'bcryptjs';
 const router = Router();
 
 router.post('/login', async (req: Request, res: Response) => {
-  const { email, password } = req.body;
-
+  const { username, password } = req.body;
   try {
     console.log('Login request received');
-    const user = await User.findOne({ where: { email } });
+    const user = await User.findOne({ where: { username } });
+    console.log('User found:', user); // ✅ added this for diagnosis
 
     if (!user) {
       console.log('User not found');
@@ -39,13 +39,29 @@ router.post('/seed-user', async (_req, res) => {
     const testUser = await User.create({
       username: 'admin',
       email: 'admin@example.com',
-      password: '$2b$10$jpbKvAh7zzSqRm/jZfM0u.yKXPk0R5.4QHOaoKjQIjUrqhHdxVp4K', // password123
+      password: '$2b$10$jpbKvAh7zzSqRm/jZfM0u.yKXPk0R5.4QHOaoKjQIjUrqhHdxVp4K',
     });
 
     res.status(201).json({ message: 'Seed user created!', testUser });
   } catch (error) {
     console.error('Seeding error:', error);
     res.status(500).json({ message: 'Failed to seed user' });
+  }
+});
+
+router.post('/seed-test-user', async (_req, res) => {
+  try {
+    const hashedPassword = await bcrypt.hash('1234', 10);
+    const testUser = await User.create({
+      username: 'testuser',
+      email: 'testuser@example.com',
+      password: hashedPassword,
+    });
+
+    res.status(201).json({ message: 'Test user created!', testUser });
+  } catch (error) {
+    console.error('Seeding error:', error);
+    res.status(500).json({ message: 'Failed to seed test user' });
   }
 });
 

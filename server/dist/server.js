@@ -13,17 +13,20 @@ const index_js_1 = __importDefault(require("./routes/index.js"));
 const index_js_2 = require("./models/index.js");
 const app = (0, express_1.default)();
 const PORT = process.env.PORT || 3001;
-const allowedOrigins = ['https://kanbanboardmina.netlify.app'];
+const allowedOrigins = [
+    'https://kanbanboardmina.netlify.app',
+    'http://localhost:3000'
+];
 app.use((0, cors_1.default)({
     origin: allowedOrigins,
     credentials: true,
 }));
+app.use(express_1.default.json());
+app.use(index_js_1.default);
+app.use(express_1.default.static('client/dist'));
 app.get('/ping', (_req, res) => {
     res.send('pong');
 });
-app.use(express_1.default.static('client/dist')); // Corrected path here
-app.use(express_1.default.json());
-app.use(index_js_1.default);
 const hash = bcryptjs_1.default.hashSync('password123', 10);
 console.log('Generated Hash:', hash);
 index_js_2.sequelize.sync({ force: forceDatabaseRefresh }).then(() => {

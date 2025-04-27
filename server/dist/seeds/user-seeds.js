@@ -8,25 +8,29 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.seedUsers = void 0;
 const user_js_1 = require("../models/user.js");
+const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const seedUsers = () => __awaiter(void 0, void 0, void 0, function* () {
     const users = [
         {
             username: 'JollyGuru',
             email: 'jolly@example.com',
-            password: 'password',
+            password: yield bcryptjs_1.default.hash('password', 10),
         },
         {
             username: 'SunnyScribe',
             email: 'sunny@example.com',
-            password: 'password',
+            password: yield bcryptjs_1.default.hash('password', 10),
         },
         {
             username: 'RadiantComet',
             email: 'radiant@example.com',
-            password: 'password',
+            password: yield bcryptjs_1.default.hash('password', 10),
         },
     ];
     yield user_js_1.User.bulkCreate(users);

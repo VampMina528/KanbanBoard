@@ -1,7 +1,7 @@
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 
 type UserLogin = {
-  email: string;
+  username: string;
   password: string;
 };
 
