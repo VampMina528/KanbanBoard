@@ -9,7 +9,7 @@ interface SwimlaneProps {
 }
 
 const Swimlane = ({ title, tickets, deleteTicket }: SwimlaneProps) => {
-  const getStatusClass = (status: string) => {
+  const getStatusClass = (status: string | null) => {
     switch (status) {
       case 'Todo':
         return 'swim-lane todo';
@@ -26,7 +26,7 @@ const Swimlane = ({ title, tickets, deleteTicket }: SwimlaneProps) => {
     <div className={getStatusClass(title)}>
       <h2>{title}</h2>
       {tickets.map((ticket) => (
-        <TicketCard key={ticket.id} ticket={ticket} deleteTicket={deleteTicket} />
+        <TicketCard key={ticket.id ?? ''} ticket={ticket} deleteTicket={deleteTicket} />
       ))}
     </div>
   );

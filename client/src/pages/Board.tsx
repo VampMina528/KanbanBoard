@@ -41,7 +41,7 @@ const Board = () => {
     } catch (err) {
       return Promise.reject(err);
     } finally {
-      fetchTickets(); // ensure tickets update after deletion
+      fetchTickets();
     }
   };
 

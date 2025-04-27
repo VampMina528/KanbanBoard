@@ -11,7 +11,7 @@ const CreateTicket = () => {
     name: '',
     description: '',
     status: 'Todo',
-    assignedUserId: 1,
+    assignedUserId: 1, // default user ID
     assignedUser: null,
   });
 
@@ -33,10 +33,17 @@ const CreateTicket = () => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+
+    // Basic validation
+    if (!newTicket.name || !newTicket.description || !newTicket.assignedUserId) {
+      alert('Please fill in all fields');
+      return;
+    }
+
     try {
       const data = await createTicket(newTicket);
       console.log('Ticket created:', data);
-      navigate('/');
+      navigate('/'); 
     } catch (err) {
       console.error('Could not create ticket', err);
     }
@@ -44,6 +51,7 @@ const CreateTicket = () => {
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
+
     setNewTicket((prev) => ({
       ...prev,
       [name]: name === 'assignedUserId' ? Number(value) : value,
