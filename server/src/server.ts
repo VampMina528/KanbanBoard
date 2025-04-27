@@ -1,4 +1,4 @@
-const forceDatabaseRefresh = true;
+const forceDatabaseRefresh = false;
 
 import bcrypt from 'bcryptjs';
 import dotenv from 'dotenv';

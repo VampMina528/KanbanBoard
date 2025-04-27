@@ -22,16 +22,16 @@ const Login = () => {
       alert('Please enter both username and password.');
       return;
     }
-  
+
     try {
-      console.log('Submitting login data:', loginData); 
+      console.log('Submitting login data:', loginData); // Debugging log
       const data = await login(loginData);
+      console.log('Login successful, received token:', data.token); // Debugging log
       Auth.login(data.token);
     } catch (err) {
       console.error('Failed to login', err);
     }
   };
-  
 
   return (
     <div className="container">

@@ -33,34 +33,20 @@ const CreateTicket = () => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    if (newTicket) {
+    try {
       const data = await createTicket(newTicket);
-      console.log(data);
+      console.log('Ticket created:', data);
       navigate('/');
+    } catch (err) {
+      console.error('Could not create ticket', err);
     }
   };
 
-  const handleTextAreaChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setNewTicket((prev) => ({
       ...prev,
-      [name]: value || '', 
-    }));
-  };
-
-  const handleTextChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setNewTicket((prev) => ({
-      ...prev,
-      [name]: value || '', 
-    }));
-  };
-
-  const handleUserChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setNewTicket((prev) => ({
-      ...prev,
-      [name]: Number(value),
+      [name]: name === 'assignedUserId' ? Number(value) : value,
     }));
   };
 
@@ -68,36 +54,42 @@ const CreateTicket = () => {
     <div className="container">
       <form className="form" onSubmit={handleSubmit}>
         <h1>Create Ticket</h1>
+
         <label htmlFor="tName">Ticket Name</label>
-        <textarea
+        <input
           id="tName"
           name="name"
-          value={newTicket.name || ''}
-          onChange={handleTextAreaChange}
+          type="text"
+          value={newTicket.name}
+          onChange={handleChange}
         />
+
         <label htmlFor="tStatus">Ticket Status</label>
         <select
-          name="status"
           id="tStatus"
-          value={newTicket.status || ''}
-          onChange={handleTextChange}
+          name="status"
+          value={newTicket.status}
+          onChange={handleChange}
         >
           <option value="Todo">Todo</option>
           <option value="In Progress">In Progress</option>
           <option value="Done">Done</option>
         </select>
+
         <label htmlFor="tDescription">Ticket Description</label>
         <textarea
           id="tDescription"
           name="description"
-          value={newTicket.description || ''}
-          onChange={handleTextAreaChange}
+          value={newTicket.description}
+          onChange={handleChange}
         />
+
         <label htmlFor="tUserId">Assign User</label>
         <select
+          id="tUserId"
           name="assignedUserId"
-          value={newTicket.assignedUserId || ''}
-          onChange={handleUserChange}
+          value={newTicket.assignedUserId}
+          onChange={handleChange}
         >
           {users.map((user) => (
             <option key={user.id} value={user.id}>
@@ -105,6 +97,7 @@ const CreateTicket = () => {
             </option>
           ))}
         </select>
+
         <button type="submit">Submit Form</button>
       </form>
     </div>

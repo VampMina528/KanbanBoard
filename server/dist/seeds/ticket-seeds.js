@@ -34,15 +34,28 @@ const seedTickets = () => __awaiter(void 0, void 0, void 0, function* () {
         {
             name: 'Test the API',
             status: 'Todo',
-            description: 'Test the API using Insomnia.',
+            description: 'Test the API thoroughly using Insomnia or Postman.',
             assignedUserId: 1,
         },
         {
             name: 'Deploy to production',
             status: 'Todo',
-            description: 'Deploy the application to Render.',
+            description: 'Deploy the application to Render and verify successful deployment.',
             assignedUserId: 2,
         },
+        {
+            name: 'Create User Dashboard',
+            status: 'Todo',
+            description: 'Design and implement a dashboard to display user tickets.',
+            assignedUserId: 3,
+        },
+        {
+            name: 'Fix critical bugs',
+            status: 'In Progress',
+            description: 'Fix all reported critical bugs found during testing.',
+            assignedUserId: 3,
+        },
     ]);
+    console.log('Tickets seeded!');
 });
 exports.seedTickets = seedTickets;

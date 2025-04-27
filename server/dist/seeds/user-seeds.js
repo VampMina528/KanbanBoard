@@ -32,6 +32,11 @@ const seedUsers = () => __awaiter(void 0, void 0, void 0, function* () {
             email: 'radiant@example.com',
             password: yield bcryptjs_1.default.hash('password', 10),
         },
+        {
+            username: 'testuser',
+            email: 'testuser@example.com',
+            password: yield bcryptjs_1.default.hash('1234', 10), // Password is 1234
+        },
     ];
     yield user_js_1.User.bulkCreate(users);
     console.log('Users seeded!');
