@@ -10,7 +10,6 @@ router.post('/login', async (req: Request, res: Response) => {
   try {
     console.log('Login request received');
     const user = await User.findOne({ where: { username } });
-    console.log('User found:', user); // ✅ added this for diagnosis
 
     if (!user) {
       console.log('User not found');
@@ -23,11 +22,11 @@ router.post('/login', async (req: Request, res: Response) => {
       return res.status(401).json({ message: 'Authentication failed' });
     }
 
-    const secret = process.env.JWT_SECRET_KEY || 'fallback_secret';
+    const secret = process.env.JWT_SECRET_KEY || 'fallback_secret'; 
     const token = jwt.sign({ id: user.id }, secret, { expiresIn: '1h' });
 
     console.log('Authentication successful');
-    return res.json({ token });
+    return res.json({ token }); 
   } catch (err) {
     console.error('Login error:', err);
     return res.status(500).json({ message: 'Internal server error' });
@@ -39,7 +38,7 @@ router.post('/seed-user', async (_req, res) => {
     const testUser = await User.create({
       username: 'admin',
       email: 'admin@example.com',
-      password: '$2b$10$jpbKvAh7zzSqRm/jZfM0u.yKXPk0R5.4QHOaoKjQIjUrqhHdxVp4K',
+      password: '$2b$10$jpbKvAh7zzSqRm/jZfM0u.yKXPk0R5.4QHOaoKjQIjUrqhHdxVp4K', // Hashed password: password123
     });
 
     res.status(201).json({ message: 'Seed user created!', testUser });
@@ -51,7 +50,7 @@ router.post('/seed-user', async (_req, res) => {
 
 router.post('/seed-test-user', async (_req, res) => {
   try {
-    const hashedPassword = await bcrypt.hash('1234', 10);
+    const hashedPassword = await bcrypt.hash('1234', 10); // Hash password '1234'
     const testUser = await User.create({
       username: 'testuser',
       email: 'testuser@example.com',
@@ -67,7 +66,7 @@ router.post('/seed-test-user', async (_req, res) => {
 
 router.delete('/delete-user', async (_req, res) => {
   try {
-    await User.destroy({ where: { email: 'admin@example.com' } });
+    await User.destroy({ where: { email: 'admin@example.com' } }); 
     res.status(200).json({ message: 'Test user deleted' });
   } catch (err) {
     console.error('Delete error:', err);

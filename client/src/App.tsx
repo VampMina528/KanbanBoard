@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Login from './pages/Login';
-import Tickets from './pages/Tickets';
+import Board from './pages/Board';  
 import CreateTicket from './pages/CreateTicket';
 import Auth from './utils/auth';
 
@@ -12,18 +12,20 @@ function App() {
         <Navbar />
         <main>
           <Routes>
-                        <Route path="/login" element={<Login />} />
+
+            <Route path="/login" element={<Login />} />
+
             <Route 
-              path="/tickets" 
-              element={Auth.loggedIn() ? <Tickets /> : <Navigate to="/login" />} 
+              path="/board" 
+              element={Auth.loggedIn() ? <Board /> : <Navigate to="/login" />} 
             />
 
-                        <Route 
+            <Route 
               path="/create-ticket" 
               element={Auth.loggedIn() ? <CreateTicket /> : <Navigate to="/login" />} 
             />
 
-            <Route path="/" element={<Navigate to="/tickets" />} />
+            <Route path="/" element={<Navigate to="/board" />} />
           </Routes>
         </main>
       </div>

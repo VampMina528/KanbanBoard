@@ -22,7 +22,6 @@ router.post('/login', (req, res) => __awaiter(void 0, void 0, void 0, function* 
     try {
         console.log('Login request received');
         const user = yield user_js_1.User.findOne({ where: { username } });
-        console.log('User found:', user); // ✅ added this for diagnosis
         if (!user) {
             console.log('User not found');
             return res.status(401).json({ message: 'Authentication failed' });
@@ -47,7 +46,7 @@ router.post('/seed-user', (_req, res) => __awaiter(void 0, void 0, void 0, funct
         const testUser = yield user_js_1.User.create({
             username: 'admin',
             email: 'admin@example.com',
-            password: '$2b$10$jpbKvAh7zzSqRm/jZfM0u.yKXPk0R5.4QHOaoKjQIjUrqhHdxVp4K',
+            password: '$2b$10$jpbKvAh7zzSqRm/jZfM0u.yKXPk0R5.4QHOaoKjQIjUrqhHdxVp4K', // Hashed password: password123
         });
         res.status(201).json({ message: 'Seed user created!', testUser });
     }
@@ -58,7 +57,7 @@ router.post('/seed-user', (_req, res) => __awaiter(void 0, void 0, void 0, funct
 }));
 router.post('/seed-test-user', (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const hashedPassword = yield bcryptjs_1.default.hash('1234', 10);
+        const hashedPassword = yield bcryptjs_1.default.hash('1234', 10); // Hash password '1234'
         const testUser = yield user_js_1.User.create({
             username: 'testuser',
             email: 'testuser@example.com',

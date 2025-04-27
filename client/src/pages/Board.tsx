@@ -59,78 +59,81 @@ const Board = () => {
     return <ErrorPage />;
   }
 
+  if (!loginCheck) {
+    return (
+      <div className="login-notice">
+        <h1>Login to create & view tickets</h1>
+      </div>
+    );
+  }
+
   return (
-    <>
-      {!loginCheck ? (
-        <div className="login-notice">
-          <h1>Login to create & view tickets</h1>
-        </div>
-      ) : (
-        <div className="board">
-          <button type="button" id="create-ticket-link">
-            <Link to="/create">New Ticket</Link>
-          </button>
+    <div className="board">
+      <Link
+        to="/create-ticket"
+        className="p-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+      >
+        New Ticket
+      </Link>
 
-          <div className="flex gap-4 mb-4 mt-4">
-            <input
-              type="text"
-              placeholder="Filter tickets..."
-              value={filterText}
-              onChange={(e) => setFilterText(e.target.value)}
-              className="p-2 border rounded w-full"
-            />
-            <select
-              value={sortOption}
-              onChange={(e) => setSortOption(e.target.value)}
-              className="p-2 border rounded"
-            >
-              <option value="newest">Newest</option>
-              <option value="oldest">Oldest</option>
-              <option value="az">A–Z</option>
-              <option value="za">Z–A</option>
-            </select>
-          </div>
+      <div className="flex gap-4 mb-4 mt-4">
+        <input
+          type="text"
+          placeholder="Filter tickets..."
+          value={filterText}
+          onChange={(e) => setFilterText(e.target.value)}
+          className="p-2 border rounded w-full"
+        />
+        <select
+          value={sortOption}
+          onChange={(e) => setSortOption(e.target.value)}
+          className="p-2 border rounded"
+        >
+          <option value="newest">Newest</option>
+          <option value="oldest">Oldest</option>
+          <option value="az">A–Z</option>
+          <option value="za">Z–A</option>
+        </select>
+      </div>
 
-          <div className="board-display mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
-            {boardStates.map((status) => {
-              const filteredTickets = tickets
-                .filter((ticket) => {
-                  const keyword = filterText.toLowerCase();
-                  return (
-                    ticket.status === status &&
-                    (ticket.name?.toLowerCase().includes(keyword) ||
-                      ticket.description?.toLowerCase().includes(keyword))
-                  );
-                })
-                .sort((a, b) => {
-                  if (sortOption === 'newest') {
-                    return new Date(b.createdAt ?? '').getTime() - new Date(a.createdAt ?? '').getTime();
-                  }
-                  if (sortOption === 'oldest') {
-                    return new Date(a.createdAt ?? '').getTime() - new Date(b.createdAt ?? '').getTime();
-                  }
-                  if (sortOption === 'az') {
-                    return (a.name ?? '').localeCompare(b.name ?? '');
-                  }
-                  if (sortOption === 'za') {
-                    return (b.name ?? '').localeCompare(a.name ?? '');
-                  }
-                  return 0;
-                });
-
+      <div className="board-display mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+        {boardStates.map((status) => {
+          const filteredTickets = tickets
+            .filter((ticket) => {
+              const keyword = filterText.toLowerCase();
               return (
-                <Swimlane
-                  title={status}
-                  key={status}
-                  tickets={filteredTickets}
-                  deleteTicket={deleteIndvTicket}
-                />
+                ticket.status === status &&
+                (ticket.name?.toLowerCase().includes(keyword) ||
+                  ticket.description?.toLowerCase().includes(keyword))
               );
-            })}
-          </div>
-        </div>
-      )}
-    </>
+            })
+            .sort((a, b) => {
+              if (sortOption === 'newest') {
+                return new Date(b.createdAt ?? '').getTime() - new Date(a.createdAt ?? '').getTime();
+              }
+              if (sortOption === 'oldest') {
+                return new Date(a.createdAt ?? '').getTime() - new Date(b.createdAt ?? '').getTime();
+              }
+              if (sortOption === 'az') {
+                return (a.name ?? '').localeCompare(b.name ?? '');
+              }
+              if (sortOption === 'za') {
+                return (b.name ?? '').localeCompare(a.name ?? '');
+              }
+              return 0;
+            });
+
+          return (
+            <Swimlane
+              title={status}
+              key={status}
+              tickets={filteredTickets}
+              deleteTicket={deleteIndvTicket}
+            />
+          );
+        })}
+      </div>
+    </div>
   );
 };
 

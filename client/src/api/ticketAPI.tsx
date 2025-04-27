@@ -30,13 +30,18 @@ const retrieveTickets = async () => {
 };
 
 const retrieveTicket = async (id: number | null): Promise<TicketData> => {
-  if (!id) throw new Error('Ticket ID is required');
+  if (!id) {
+    throw new Error('Ticket ID is required');
+  }
 
   try {
     const token = Auth.getToken();
-    if (!token) throw new Error('No token found');
+    if (!token) {
+      throw new Error('No token found');
+    }
 
     const response = await fetch(`${API_BASE_URL}/api/tickets/${id}`, {
+      method: 'GET',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
@@ -46,13 +51,14 @@ const retrieveTicket = async (id: number | null): Promise<TicketData> => {
     const data = await response.json();
 
     if (!response.ok) {
-      throw new Error(data.message || 'Failed to retrieve ticket');
+      const errorMessage = data?.message || 'Failed to retrieve ticket';
+      throw new Error(errorMessage);
     }
 
-    return data;
+    return data; 
   } catch (err) {
     console.error('Error retrieving single ticket:', err);
-    return Promise.reject('Could not fetch singular ticket');
+    throw new Error(err instanceof Error ? err.message : 'Unknown error occurred');
   }
 };
 
